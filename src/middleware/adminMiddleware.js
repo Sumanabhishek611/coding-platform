@@ -30,7 +30,7 @@ const adminMiddleware=async(req,res,next)=>{
 
     }
     catch(err){
-        res.send(err.message)
+        res.status(401).send("Error: "+ err.message)
     }
 }
 

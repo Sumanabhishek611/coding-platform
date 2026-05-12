@@ -1,54 +1,56 @@
-const mongoose=require('mongoose')
-const Schema=mongoose.Schema
+const mongoose = require('mongoose');
+const {Schema} = mongoose;
 
-const problemSchema=new Schema({
+const problemSchema = new Schema({
     title:{
         type:String,
         required:true
     },
     description:{
-       type:String,
-       required:true
+        type:String,
+        required:true
     },
     difficulty:{
         type:String,
+        enum:['easy','medium','hard'],
         required:true,
-        enum:['easy','medium','hard']
     },
     tags:{
         type:String,
-        enum:['Array','linked list','graph','dp'],
-        required:true,
-
+        enum:['array','linkedList','graph','dp'],
+        required:true
     },
-    visibletestcases:[
+    visibleTestCases:[
         {
             input:{
                 type:String,
-                required:true
+                required:true,
             },
             output:{
-                type:String
+                type:String,
+                required:true,
             },
             explanation:{
                 type:String,
                 required:true
             }
-        },
+        }
     ],
-    hiddentestcases:[
+
+    hiddenTestCases:[
         {
             input:{
                 type:String,
-                required:true
+                required:true,
             },
             output:{
                 type:String,
-                required:true
+                required:true,
             }
         }
     ],
-    startCode:[
+
+    startCode: [
         {
             language:{
                 type:String,
@@ -56,10 +58,11 @@ const problemSchema=new Schema({
             },
             initialCode:{
                 type:String,
-                required:true,
+                required:true
             }
         }
     ],
+
     referenceSolution:[
         {
             language:{
@@ -68,17 +71,21 @@ const problemSchema=new Schema({
             },
             completeCode:{
                 type:String,
-                required:true,
+                required:true
             }
         }
     ],
+
     problemCreator:{
-        type:Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref:'user',
         required:true
     }
 })
 
-const Problem=mongoose.model('prblem',problemSchema)
-module.exports=Problem
+
+const Problem = mongoose.model('problem',problemSchema);
+
+module.exports = Problem;
+
 

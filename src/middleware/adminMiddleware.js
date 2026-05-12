@@ -15,9 +15,11 @@ const adminMiddleware=async(req,res,next)=>{
         if(!_id)
             throw new Error("invalid token")
         const result=await User.findById(_id)
+        //  console.log(paylaod);
+        //  console.log(result);
          
-        if(paylaod.role!='admin')
-            throw new Error("invalid token")
+        if(result.role!='admin')
+            throw new Error("You are not admin")
 
         if(!result)
             throw new Error("user not exist")

@@ -87,5 +87,17 @@ const adminRegister=async(req,res)=>{
 
 }
 
+const deleteProfile=async(req,res)=>{
+   try{
 
-module.exports={register,login,logout,adminRegister}
+      const userId=req.result._id;
+      await User.findByIdAndDelete(userId)
+      res.status(200).send("user deleted successfully")
+   }
+   catch(err){
+      res.status(500).send(err.message)
+   }
+
+}
+
+module.exports={register,login,logout,adminRegister,deleteProfile}

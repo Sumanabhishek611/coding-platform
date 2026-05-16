@@ -1,7 +1,7 @@
 const {getLanguageById,submitBatch,submitToken} = require("../utils/problemutils");
 const Problem = require("../models/problem");
 const User = require("../models/user");
-
+const Submission=require("../models/submissions")
 const createProblem = async (req,res)=>{
 
     const {title,description,difficulty,tags,
@@ -32,14 +32,16 @@ const createProblem = async (req,res)=>{
 
 
         const submitResult = await submitBatch(submissions);
-        // console.log(submitResult);
+        console.log(submitResult);
 
         const resultToken = submitResult.map((value)=> value.token);
-
+          console.log(resultToken);
+          
         // ["db54881d-bcf5-4c7b-a2e3-d33fe7e25de7","ecc52a9b-ea80-4a00-ad50-4ab6cc3bb2a1","1b35ec3b-5776-48ef-b646-d5522bdeb2cc"]
         
        const testResult = await submitToken(resultToken);
-
+       console.log(testResult);
+       
 
 
        for(const test of testResult){
@@ -173,4 +175,24 @@ const solvedAllproblem=async(req,res)=>{
     }
 }
 
-module.exports={createProblem,updateProblem,deletedProblem,getProblemById,getAllProblem,solvedAllproblem}
+const SubmittedProblem=async(req,res)=>{
+  try{
+
+    const userId=req.result._id;
+    const problemId=req.params.pid
+    
+    
+    const ans=await Submission.find({userId,problemId})
+  
+    
+    if(ans.length==0){
+      res.status(200).send("No submission found")
+    }
+    res.status(200).send(ans);
+  }
+  catch(err){
+    res.status(500).send(err.message)
+  }
+}
+
+module.exports={createProblem,updateProblem,deletedProblem,getProblemById,getAllProblem,solvedAllproblem,SubmittedProblem}

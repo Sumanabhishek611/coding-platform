@@ -2,8 +2,15 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login"
 import Home from "./pages/Home"
 import {Routes, Route } from "react-router";
+import { useSelector, useDispatch } from 'react-redux'
+import { checkAuth } from "./authSlice";
+import { useEffect } from "react";
 function App() {
-
+  const {isAuthenticated} = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  useEffect(() => {
+     dispatch(checkAuth())
+  }, [isAuthenticated]);
 
   return (
     <>

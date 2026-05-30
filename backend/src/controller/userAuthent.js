@@ -12,8 +12,16 @@ const register=async(req,res)=>{
          req.body.role = 'user'
         const user= await User.create(req.body)
         const token=jwt.sign({_id:user._id,emailId:emailId},process.env.JWT_KEY,{expiresIn:60*60})
+        const reply={
+           firstName:user.firstName,
+           emailId:user.emailId,
+           _id:user._id
+        }
        res.cookie('token',token,{maxAge:60*60*1000})
-       res.status(201).send("User registered successfully")
+       res.status(201).json({
+         user:reply,
+         message:"user register successfully"
+       })
     }
     catch(err){
        res.status(400).send(err.message)
@@ -38,7 +46,15 @@ const login=async(req,res)=>{
        }
        const token=jwt.sign({_id:user._id,emailId:emailId},process.env.JWT_KEY,{expiresIn:60*60})
        res.cookie('token',token,{maxAge:60*60*1000})
-       res.status(200).send("user login successfully")
+       const reply={
+         firstName:user.firstName,
+         emailId:user.emailId,
+         _id:user._id
+       }
+       res.status(200).json({
+         user:reply,
+         message:"User login successfully"
+       })
     }
     catch(err){
        res.status(401).send("Error: "+err.message);
